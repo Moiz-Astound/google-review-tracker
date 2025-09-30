@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Competitor Store Ratings Dashboard - Google</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #e3f2fd; color: #333; }
+    .container { max-width: 1400px; margin: 0 auto; padding: 16px; }
+    .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
+    .card { background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); padding: 16px; }
+
+    .header { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+
+    .summary-cards { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 16px; }
+    .summary-card { padding: 20px; border: 2px solid #ddd; border-radius: 8px; text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+    .summary-card.best { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+    .summary-rating { font-size: 36px; font-weight: 700; margin-bottom: 8px; }
+    .summary-name { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+    .summary-count { font-size: 12px; opacity: 0.9; }
+
+    .region-table { margin-bottom: 40px; }
+    .region-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #007bff;
+      margin-bottom: 16px;
+      padding: 12px;
+      background: #f8f9fa;
+      border-radius: 6px;
+    }
+    .data-table-region { width: 100%; border-collapse: collapse; }
+    .data-table-region th {
+      background: #007bff;
+      color: white;
+      padding: 12px;
+      text-align: center;
+      font-weight: 600;
+      border: 1px solid #0056b3;
+    }
+    .data-table-region td {
+      padding: 10px;
+      text-align: center;
+      border: 1px solid #ddd;
+    }
+    .data-table-region td:first-child,
+    .data-table-region td:nth-child(2) {
+      text-align: left;
+      font-weight: 600;
+    }
+    .data-table-region tr:hover { background: #f8f9fa; }
+    .rating-cell {
+      cursor: pointer;
+      color: #007bff;
+      font-weight: 600;
+      transition: all 0.2s;
+      padding: 4px 8px;
+      border-radius: 4px;
+      display: inline-block;
+      margin: 2px;
+    }
+    .rating-cell:hover {
+      background: #007bff;
+      color: white;
+      transform: scale(1.05);
+    }
+    .no-data {
+      color: #999;
+      font-style: italic;
+    }
+    .average-row {
+      background: #f0f7ff !important;
+      font-weight: 700;
+      border-top: 3px solid #007bff;
+    }
+    .average-row td {
+      font-size: 15px;
+      color: #0056b3;
+      text-align: center !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="grid">
+      <div class="header card">
+        <div>
+          <h1>Competitor Store Ratings Dashboard - Google</h1>
+          <div style="font-size:14px;color:#555;margin-top:4px;">Created by Moiz Uddin</div>
+          <div style="font-size:12px;color:#999;margin-top:4px;">Consolidated view - Astound-focused competitor analysis</div>
+          <div style="font-size:11px;color:#999;margin-top:2px;font-style:italic;">Last updated: October 1, 2025</div>
+        </div>
+        <div>
+          <nav style="margin-right: 12px; display: flex; gap: 12px;">
+            <a href="index.html" style="color: #007bff; text-decoration: none; font-weight: 600; padding: 8px 16px; border: 2px solid #007bff; border-radius: 4px; display: inline-block; transition: all 0.2s;"
+               onmouseover="this.style.background='#007bff'; this.style.color='white';"
+               onmouseout="this.style.background='transparent'; this.style.color='#007bff';">
+              September Reviews
+            </a>
+            <a href="historical.html" style="color: #007bff; text-decoration: none; font-weight: 600; padding: 8px 16px; border: 2px solid #007bff; border-radius: 4px; display: inline-block; transition: all 0.2s;"
+               onmouseover="this.style.background='#007bff'; this.style.color='white';"
+               onmouseout="this.style.background='transparent'; this.style.color='#007bff';">
+              Historical View
+            </a>
+          </nav>
+        </div>
+      </div>
+
+      <div class="summary-cards">
+        <div class="summary-card best">
+          <div class="summary-rating">4.23</div>
+          <div class="summary-name">AT&T</div>
+          <div class="summary-count">42 stores</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-rating">3.99</div>
+          <div class="summary-name">Verizon</div>
+          <div class="summary-count">39 stores</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-rating">3.64</div>
+          <div class="summary-name">Astound</div>
+          <div class="summary-count">45 stores</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-rating">3.27</div>
+          <div class="summary-name">Xfinity</div>
+          <div class="summary-count">29 stores</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-rating">3.03</div>
+          <div class="summary-name">Spectrum</div>
+          <div class="summary-count">11 stores</div>
+        </div>
+      </div>
+
+      <div id="regional-tables" class="card" style="grid-column: 1 / -1;">
+
+        <div class="region-table">
+          <div class="region-title">Region: Texas</div>
+          <table class="data-table-region">
+            <thead>
+              <tr>
+                <th>State</th>
+                <th>City</th>
+                <th>Astound</th>
+                <th>AT&T</th>
+                <th>Spectrum</th>
+                <th>Verizon</th>
+                <th>Xfinity</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>TX</td>
+                <td>Austin</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+1100+E+Howard+Lane,+Building+6,+Austin,+TX', '_blank')">4.1</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=ATT+Store:+13000+N+Interstate+Hwy+35+Ste.+100,+Austin,+TX+78753', '_blank')">4.4</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Spectrum+Store:+11920+Alterra+Pkwy+Suite+134,+Austin,+TX+78758', '_blank')">3.4</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Verizon+Store:+1011+E+5th+St.+Ste+140,+Austin,+TX+78702', '_blank')">4.4</span></td>
+                <td class="no-data">-</td>
+              </tr>
+              <tr>
+                <td>TX</td>
+                <td>Belton</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+7595+W+U.S.+Hwy+190,+Suite+B,+Belton,+TX', '_blank')">3.8</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=ATT+Store:+2431+N+Main+St,+Belton,+TX+76513', '_blank')">4.3</span></td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+              </tr>
+              <tr>
+                <td>TX</td>
+                <td>Brownwood</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+500+Fisk+Ave,+Brownwood,+TX', '_blank')">3.9</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=ATT+Store:+210+W+Commerce+St,+Brownwood,+TX+76801', '_blank')">4.0</span></td>
+                <td class="no-data">-</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Verizon+Store:+300+W+Commerce+St,+Brownwood,+TX+76801', '_blank')">3.5</span></td>
+                <td class="no-data">-</td>
+              </tr>
+              <tr>
+                <td>TX</td>
+                <td>Corpus Christi</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+6441+Saratoga+Boulevard,+Corpus+Christi,+TX', '_blank')">4.2</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=ATT+Store:+6093+Saratoga+Blvd+E,+Corpus+Christi,+TX+78414', '_blank')">4.7</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Spectrum+Store:+4001+Saratoga+Blvd+#106,+Corpus+Christi,+TX+78413', '_blank')">3.0</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Verizon+Store:+4801+S+Padre+Island+Dr,+Corpus+Christi,+TX+78411', '_blank')">3.7</span></td>
+                <td class="no-data">-</td>
+              </tr>
+              <tr>
+                <td>TX</td>
+                <td>Lewisville (Dallas)</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+500+Tittle+Rd.+Ste+400,+Lewisville+(Dallas),+TX', '_blank')">3.0</span></td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+              </tr>
+              <tr>
+                <td>TX</td>
+                <td>Missouri City</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+5777+Sienna+Pkwy+Missouri+City,+TX,+77459', '_blank')">3.4</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=ATT+Store:+9029+Hwy+6+A-110,+Missouri+City,+TX+77459', '_blank')">4.5</span></td>
+                <td class="no-data">-</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Verizon+Store:+5750+Hwy+6,+Missouri+City,+TX+77459', '_blank')">4.3</span></td>
+                <td class="no-data">-</td>
+              </tr>
+              <tr>
+                <td>TX</td>
+                <td>Odessa</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+2401+E+Interstate+20,+Odessa,+TX', '_blank')">4.2</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=ATT+Store:+1801+Linda+Ave+Suite+110,+Odessa,+TX+79763', '_blank')">4.1</span></td>
+                <td class="no-data">-</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Verizon+Store:+4041+E+42nd+St,+Odessa,+TX+79762', '_blank')">3.9</span></td>
+                <td class="no-data">-</td>
+              </tr>
+              <tr>
+                <td>TX</td>
+                <td>San Antonio</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+6480+N+New+Braunfels+Ave,+San+Antonio,+TX', '_blank')">3.6</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=ATT+Store:+1442+Austin+Hwy,+San+Antonio,+TX+78209', '_blank')">3.7</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Spectrum+Store:+438+Northwest+Loop+410,+San+Antonio,+TX+78216', '_blank')">3.3</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Verizon+Store:+255+E+Basse+Rd+#1530,+San+Antonio,+TX+78209', '_blank')">3.6</span></td>
+                <td class="no-data">-</td>
+              </tr>
+              <tr>
+                <td>TX</td>
+                <td>San Marcos</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+401+Carlson+Circle,+San+Marcos,+TX', '_blank')">4.4</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=ATT+Store:+1104+Thorpe+Ln+Ste+A,+San+Marcos,+TX+78666', '_blank')">4.5</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Spectrum+Store:+750+Barnes+Dr+Ste+130,+San+Marcos,+TX+78666', '_blank')">2.8</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Verizon+Store:+2319+I+35+N+Frontage+Rd+Ste+911,+San+Marcos,+TX+78666', '_blank')">3.3</span></td>
+                <td class="no-data">-</td>
+              </tr>
+              <tr>
+                <td>TX</td>
+                <td>Waco</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+7200+Imperial+Drive,+Waco,+TX', '_blank')">4.0</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=ATT+Store:+1428+Wooded+Acres+Dr+#120,+Waco,+TX+76710', '_blank')">4.3</span></td>
+                <td class="no-data">-</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Verizon+Store:+2812+W+Loop+340+Suite#+H-12,+Waco,+TX+76711', '_blank')">3.7</span></td>
+                <td class="no-data">-</td>
+              </tr>
+              <tr class="average-row">
+                <td colspan="2">Regional Average</td>
+                <td>3.86</td>
+                <td>4.28</td>
+                <td>3.12</td>
+                <td>3.80</td>
+                <td class="no-data">-</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="region-table">
+          <div class="region-title">Region: Illiana</div>
+          <table class="data-table-region">
+            <thead>
+              <tr>
+                <th>State</th>
+                <th>City</th>
+                <th>Astound</th>
+                <th>AT&T</th>
+                <th>Spectrum</th>
+                <th>Verizon</th>
+                <th>Xfinity</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>IL</td>
+                <td>Chicago</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+2460+West+Bradley+Place,+Chicago,+IL', '_blank')">2.3</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=ATT+Store:+4422+N+Broadway,+Chicago,+IL+60640', '_blank')">4.3</span></td>
+                <td class="no-data">-</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Verizon+Store:+36+S+State+St,+Chicago,+IL+60603', '_blank')">3.4</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Xfinity+Store:+1255+W+North+Ave,+Chicago,+IL+60642', '_blank')">3.5</span></td>
+              </tr>
+              <tr>
+                <td>IN</td>
+                <td>Evansville</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+6600+Hank+Ave,+Evansville,+IN+47715', '_blank')">3.8</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=ATT+Store:+330+N+Burkhardt+Rd,+Evansville,+IN+47715', '_blank')">4.1</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Spectrum+Store:+1122+Hirschland+Rd+Suite+4,+Evansville,+IN+47715', '_blank')">2.9</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Verizon+Store:+2001+N+Green+River+Rd,+Evansville,+IN+47715', '_blank')">3.5</span></td>
+                <td class="no-data">-</td>
+              </tr>
+              <tr class="average-row">
+                <td colspan="2">Regional Average</td>
+                <td>3.05</td>
+                <td>4.20</td>
+                <td>2.90</td>
+                <td>3.45</td>
+                <td>3.50</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="region-table">
+          <div class="region-title">Region: West</div>
+          <table class="data-table-region">
+            <thead>
+              <tr>
+                <th>State</th>
+                <th>City</th>
+                <th>Astound</th>
+                <th>AT&T</th>
+                <th>Spectrum</th>
+                <th>Verizon</th>
+                <th>Xfinity</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>CA</td>
+                <td>Auburn</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+13428+Lincoln+Way,+Auburn,+CA+95603', '_blank')">2.7</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=ATT+Store:+11835+Willow+Creek+Dr,+Auburn,+CA+95603', '_blank')">4.4</span></td>
+                <td class="no-data">-</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Verizon+Store:+340+Elm+Ave+Suite+E,+Auburn,+CA+95603', '_blank')">4.6</span></td>
+                <td class="no-data">-</td>
+              </tr>
+              <tr>
+                <td>CA</td>
+                <td>Concord</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+785+Oak+Grove+Rd,+#M,+Concord,+CA,+94518', '_blank')">3.1</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=ATT+Store:+2015+Diamond+Blvd+Suite+125,+Concord,+CA+94520', '_blank')">4.8</span></td>
+                <td class="no-data">-</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Verizon+Store:+4305+Clayton+Rd+Ste+D,+Concord,+CA+94521', '_blank')">4.7</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Xfinity+Store:+2001+Diamond+Blvd+Suite+150,+Concord,+CA+94520', '_blank')">3.4</span></td>
+              </tr>
+              <tr>
+                <td>CA</td>
+                <td>Rocklin</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+2205+Sunset+Blvd,+Suite+501,+Rocklin,+CA', '_blank')">3.8</span></td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Verizon+Store:+2330+Sunset+Blvd,+Rocklin,+CA+95765', '_blank')">4.3</span></td>
+                <td class="no-data">-</td>
+              </tr>
+              <tr>
+                <td>CA</td>
+                <td>San Luis Obispo</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+711+Tank+Farm+Road,+Suite+210.+San+Luis+Obispo,+CA+93401', '_blank')">4.5</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=ATT+Store:+11998+Los+Osos+Valley+Rd,+San+Luis+Obispo,+CA+93405', '_blank')">4.9</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Spectrum+Store:+481+Madonna+Rd+Suite+A,+San+Luis+Obispo,+CA+93405', '_blank')">2.7</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Verizon+Store:+994+Mill+St,+San+Luis+Obispo,+CA+93401', '_blank')">3.7</span></td>
+                <td class="no-data">-</td>
+              </tr>
+              <tr>
+                <td>CA</td>
+                <td>San Mateo</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+2841+S+El+Camino+Real,+San+Mateo,+CA', '_blank')">4.4</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=ATT+Store:+60+31st+Ave+Ste+308,+San+Mateo,+CA+94403', '_blank')">4.2</span></td>
+                <td class="no-data">-</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Verizon+Store:+2290+Bridgepointe+Pkwy,+San+Mateo,+CA+94404', '_blank')">2.9</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Xfinity+Store:+35+W+Hillsdale+Blvd+Suite+50,+San+Mateo,+CA+94403', '_blank')">2.9</span></td>
+              </tr>
+              <tr>
+                <td>CA</td>
+                <td>West Sacramento</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+1031+Triangle+Ct,++West+Sacramento,+CA', '_blank')">3.6</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=ATT+Store:+768+Ikea+Ct+Ste+100,+West+Sacramento,+CA+95605', '_blank')">3.9</span></td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+              </tr>
+              <tr>
+                <td>CA</td>
+                <td>Woodland</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+1861+E+Gibson+Road,+Suite+C,+Woodland,+CA', '_blank')">3.7</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=ATT+Store:+1810+E+Main+St,+Woodland,+CA+95776', '_blank')">4.1</span></td>
+                <td class="no-data">-</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Verizon+Store:+2021+Bronze+Star+Dr+Ste+3c,+Woodland,+CA+95776', '_blank')">4.2</span></td>
+                <td class="no-data">-</td>
+              </tr>
+              <tr>
+                <td>OR</td>
+                <td>Canby</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+353+NW+2nd+Ave,+Canby,+OR', '_blank')">3.3</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=ATT+Store:+1075+SW+1st+Ave,+Canby,+OR+97013', '_blank')">4.4</span></td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+              </tr>
+              <tr>
+                <td>OR</td>
+                <td>Depoe Bay</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+646+US-101,+Depoe+Bay,+OR', '_blank')">3.6</span></td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+              </tr>
+              <tr>
+                <td>OR</td>
+                <td>Sandy</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+36653+US-26,+Sandy,+OR', '_blank')">2.1</span></td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Verizon+Store:+17390+SE+Bluff+Rd+Suite+2,+Sandy,+OR+97055', '_blank')">4.9</span></td>
+                <td class="no-data">-</td>
+              </tr>
+              <tr>
+                <td>OR</td>
+                <td>Sheridan</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+430+S+Bridge+St,+Sheridan,+OR', '_blank')">2.5</span></td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+              </tr>
+              <tr>
+                <td>OR</td>
+                <td>Stayton</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+281+N+3rd+Ave,+Stayton,+OR', '_blank')">2.5</span></td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Verizon+Store:+101+Fern+Ridge+Rd+SE,+Stayton,+OR+97383', '_blank')">4.2</span></td>
+                <td class="no-data">-</td>
+              </tr>
+              <tr>
+                <td>OR</td>
+                <td>Waldport</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+385+NE+Alsea+HWY+#6,+Waldport,+OR', '_blank')">4.7</span></td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+              </tr>
+              <tr>
+                <td>OR</td>
+                <td>Woodburn</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+635+Ray+J+Glatt+Circle+B,+Woodburn,+OR', '_blank')">2.6</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=ATT+Store:+3040+Sprague+Ln+#160,+Woodburn,+OR+97071', '_blank')">4.3</span></td>
+                <td class="no-data">-</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Verizon+Store:+105+N+Arney+Rd+Ste+173,+Woodburn,+OR+97071', '_blank')">4.3</span></td>
+                <td class="no-data">-</td>
+              </tr>
+              <tr>
+                <td>WA</td>
+                <td>La Conner</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+511+Morris+St,+Suite+2,+La+Conner,+WA', '_blank')">3.1</span></td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+              </tr>
+              <tr>
+                <td>WA</td>
+                <td>Longview</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+1111+11th+Ave,+Longview,+WA', '_blank')">4.3</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=ATT+Store:+1015+Ocean+Beach+Hwy+Suite+127,+Longview,+WA+98632', '_blank')">4.2</span></td>
+                <td class="no-data">-</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Verizon+Store:+1015+Ocean+Beach+Hwy+Ste+137,+Longview,+WA+98632', '_blank')">4.3</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Xfinity+Store:+740+Ocean+Beach+Hwy+Suite+A,+Longview,+WA+98632', '_blank')">3.1</span></td>
+              </tr>
+              <tr>
+                <td>WA</td>
+                <td>Port Angeles</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+112+W+8th+St,+Port+Angeles,+WA', '_blank')">3.5</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=ATT+Store:+112+S+Del+Guzzi+Dr+#1,+Port+Angeles,+WA+98362', '_blank')">4.9</span></td>
+                <td class="no-data">-</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Verizon+Store:+2737+E+Hwy+101,+Port+Angeles,+WA+98362', '_blank')">4.4</span></td>
+                <td class="no-data">-</td>
+              </tr>
+              <tr>
+                <td>WA</td>
+                <td>Port Orchard</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+4519+SE+Mile+Hill+Dr,+Port+Orchard,+WA', '_blank')">3.3</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=ATT+Store:+3475+Bethel+Rd+SE+#101,+Port+Orchard,+WA+98366', '_blank')">4.0</span></td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+              </tr>
+              <tr>
+                <td>WA</td>
+                <td>Seattle</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+900+Lenora+Street,+Suite+140,+Seattle,+WA', '_blank')">3.3</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=ATT+Store:+1504+6th+Ave,+Seattle,+WA+98101', '_blank')">3.7</span></td>
+                <td class="no-data">-</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Verizon+Store:+1633+6th+Ave,+Seattle,+WA+98101', '_blank')">3.6</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Xfinity+Store:+2202+Westlake+Ave+N+Suite+116,+Seattle,+WA+98121', '_blank')">3.1</span></td>
+              </tr>
+              <tr>
+                <td>WA</td>
+                <td>Sequim</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+1400+W+Washington+St+#108,+Sequim,+WA', '_blank')">3.1</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=ATT+Store:+1099+W+Washington+St,+Sequim,+WA+98382', '_blank')">4.6</span></td>
+                <td class="no-data">-</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Verizon+Store:+1241+W+Washington+St,+Sequim,+WA+98382', '_blank')">4.3</span></td>
+                <td class="no-data">-</td>
+              </tr>
+              <tr>
+                <td>WA</td>
+                <td>Stanwood</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+9300+271st+St+NW+Suite+B1,+Stanwood,+WA', '_blank')">2.4</span></td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+              </tr>
+              <tr class="average-row">
+                <td colspan="2">Regional Average</td>
+                <td>3.34</td>
+                <td>4.34</td>
+                <td>2.70</td>
+                <td>4.18</td>
+                <td>3.12</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="region-table">
+          <div class="region-title">Region: East</div>
+          <table class="data-table-region">
+            <thead>
+              <tr>
+                <th>State</th>
+                <th>City</th>
+                <th>Astound</th>
+                <th>AT&T</th>
+                <th>Spectrum</th>
+                <th>Verizon</th>
+                <th>Xfinity</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>DC</td>
+                <td>Washington</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+5756+Georgia+Ave+NW,+Washington,+DC', '_blank')">4.3</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=ATT+Store:+5301+Wisconsin+Ave+NW,+Washington,+DC+20015', '_blank')">4.0</span></td>
+                <td class="no-data">-</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Verizon+Store:+1529+14th+St+NW,+Washington,+DC+20005', '_blank')">3.6</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Xfinity+Store:+715+7th+St+NW,+Washington,+DC+20001', '_blank')">3.1</span></td>
+              </tr>
+              <tr>
+                <td>MA</td>
+                <td>Arlington</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+956+Massachusetts+Ave,+Arlington,+MA', '_blank')">3.8</span></td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Verizon+Store:+457+Massachusetts+Ave,+Arlington,+MA+02474', '_blank')">4.7</span></td>
+                <td class="no-data">-</td>
+              </tr>
+              <tr>
+                <td>MA</td>
+                <td>Framingham</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+518+Union+Ave,+Framingham,+MA', '_blank')">3.9</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=ATT+Store:+225+Worcester+Rd,+Framingham,+MA+01701', '_blank')">4.8</span></td>
+                <td class="no-data">-</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Verizon+Store:+86+Worcester+Rd,+Framingham,+MA+01701', '_blank')">3.5</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Xfinity+Store:+400+Cochituate+Road,+Framingham,+MA+01701', '_blank')">3.3</span></td>
+              </tr>
+              <tr>
+                <td>MA</td>
+                <td>Hyde Park</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+1224+Hyde+Park+Ave,+Hyde+Park,+MA', '_blank')">4.3</span></td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Xfinity+Store:+950+Hyde+Park+Ave,+Hyde+Park,+MA+02136', '_blank')">3.8</span></td>
+              </tr>
+              <tr>
+                <td>MD</td>
+                <td>Millersville</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+406+Headquarters+Dr+#201,+Millersville,+MD', '_blank')">3.8</span><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+406+Headquarters+Dr+#201,+Millersville,+MD', '_blank')">3.8</span></td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+              </tr>
+              <tr>
+                <td>NJ</td>
+                <td>Princeton</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+650+College+Rd+E+Suite+3100,+Princeton,+NJ+08540', '_blank')">4.7</span></td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+              </tr>
+              <tr>
+                <td>NY</td>
+                <td>Long Island City</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+33-16+Woodside+Ave,+Long+Island+City,+NY', '_blank')">4.5</span><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+2215+43rd+Ave.+Long+Island+City,+NY+11101', '_blank')">4.1</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=ATT+Store:+46-32+Vernon+Blvd,+Long+Island+City,+NY+11101', '_blank')">4.6</span><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=ATT+Store:+34-60+48th+St,+Long+Island+City,+NY+11101', '_blank')">1.0</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Spectrum+Store:+23-20+Jackson+Ave,+Long+Island+City,+NY+11101', '_blank')">2.9</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Verizon+Store:+47-34+Vernon+Blvd,+Long+Island+City,+NY+11101', '_blank')">4.9</span></td>
+                <td class="no-data">-</td>
+              </tr>
+              <tr>
+                <td>NY</td>
+                <td>New York</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+1133+6th+Ave,+New+York,+NY', '_blank')">4.5</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=ATT+Store:+3+Times+Sq,+New+York,+NY+10036', '_blank')">3.9</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Spectrum+Store:+450+W+33rd+St+Suite+135,+New+York,+NY+10001', '_blank')">3.5</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Verizon+Store:+125+W+42nd+St,+New+York,+NY+10036', '_blank')">3.3</span></td>
+                <td class="no-data">-</td>
+              </tr>
+              <tr>
+                <td>PA</td>
+                <td>Bethlehem</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+2124+Avenue+C,+Bethlehem,+PA', '_blank')">3.8</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=ATT+Store:+3859+Nazareth+Pike+Ste+102,+Bethlehem,+PA+18020', '_blank')">4.4</span></td>
+                <td class="no-data">-</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Verizon+Store:+3926+Linden+St+#15,+Bethlehem,+PA+18020', '_blank')">4.8</span></td>
+                <td class="no-data">-</td>
+              </tr>
+              <tr>
+                <td>PA</td>
+                <td>Pittston</td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=Astound+Store:+1864+N+Twp+Blvd,+Pittston,+PA', '_blank')">3.5</span></td>
+                <td><span class="rating-cell" onclick="window.open('https://www.google.com/search?q=ATT+Store:+320+PA-315+Suite+120,+Pittston,+PA+18640', '_blank')">4.4</span></td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+                <td class="no-data">-</td>
+              </tr>
+              <tr class="average-row">
+                <td colspan="2">Regional Average</td>
+                <td>4.08</td>
+                <td>3.87</td>
+                <td>3.20</td>
+                <td>4.13</td>
+                <td>3.40</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
