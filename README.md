@@ -1,10 +1,10 @@
 # Astound Customer Review Analytics Dashboard
+## Created by Moiz Uddin
 
 ## Overview
 
 This is a comprehensive customer review analytics platform designed to track, analyze, and visualize Astound's customer satisfaction metrics across all markets and locations. The dashboard provides real-time insights into customer feedback, competitive performance, and market trends.
 
-**Created by:** Moiz Uddin
 **Last Updated:** October 2025
 
 ---
