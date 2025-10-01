@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>September Reviews</title>
+    <title>Astound September Reviews Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -113,7 +113,7 @@
         .preset-btn:hover { background: #f8f9fa; border-color: #007bff; }
         .preset-btn:focus { outline: 2px solid #007bff; outline-offset: 2px; }
         .preset-btn.active { background: #007bff; color: #fff; }
-        .date-picker { display: flex; gap: 8px; align-items: center; }
+        .date-picker { display: none; gap: 8px; align-items: center; }
         .date-picker label { color: #000; }
         .date-picker input { padding: 8px; border: 1px solid #ddd; border-radius: 4px; color: #000; background: #fff; }
         .date-picker input:focus { outline: 2px solid #007bff; outline-offset: 2px; border-color: #007bff; }
@@ -252,23 +252,15 @@
             <div class="header card">
                 <div style="margin-bottom: 20px;">
                     <img src="Astound_2022_Logo.png" alt="Astound Logo" style="height: 50px; margin-bottom: 15px; display: block;">
-                    <h1>September Reviews</h1>
+                    <h1>Companywide Google Reviews - September</h1>
                     <div style="font-size: 12px; color: #999;">Created by Moiz Uddin</div>
                 </div>
                 <div style="display: flex; gap: 20px; align-items: center;">
                     <nav style="margin-right: 12px; display: flex; gap: 12px;">
-                        <a href="historical.html" style="color: #007bff; text-decoration: none; font-weight: 600; padding: 8px 16px; border: 2px solid #007bff; border-radius: 4px; display: inline-block; transition: all 0.2s;"
-                           onmouseover="this.style.background='#007bff'; this.style.color='white';"
-                           onmouseout="this.style.background='transparent'; this.style.color='#007bff';"
-                           aria-label="Go back to Dashboard">Historical View</a>
-                        <a href="competitors.html" style="color: #007bff; text-decoration: none; font-weight: 600; padding: 8px 16px; border: 2px solid #007bff; border-radius: 4px; display: inline-block; transition: all 0.2s;"
-                           onmouseover="this.style.background='#007bff'; this.style.color='white';"
-                           onmouseout="this.style.background='transparent'; this.style.color='#007bff';"
-                           aria-label="Go to Competitors page">Competitors</a>
+                        <a href="historical.html" style="color: #007bff; text-decoration: none; font-weight: 600; padding: 8px 16px; border: 2px solid #007bff; border-radius: 4px; display: inline-block; transition: all 0.2s;" onmouseover="this.style.background='#007bff'; this.style.color='white';" onmouseout="this.style.background='transparent'; this.style.color='#007bff';">Historical View</a>
+                        <a href="competitors.html" style="color: #007bff; text-decoration: none; font-weight: 600; padding: 8px 16px; border: 2px solid #007bff; border-radius: 4px; display: inline-block; transition: all 0.2s;" onmouseover="this.style.background='#007bff'; this.style.color='white';" onmouseout="this.style.background='transparent'; this.style.color='#007bff';">Competitors</a>
+                        <a href="markets.html" style="color: #007bff; text-decoration: none; font-weight: 600; padding: 8px 16px; border: 2px solid #007bff; border-radius: 4px; display: inline-block; transition: all 0.2s;" onmouseover="this.style.background='#007bff'; this.style.color='white';" onmouseout="this.style.background='transparent'; this.style.color='#007bff';">Rankings</a>
                     </nav>
-                    <div class="platform-filters">
-                        <label><input type="checkbox" id="google-filter" checked aria-label="Filter Google reviews" disabled> Google Reviews Only</label>
-                    </div>
                     <button class="reset-btn" onclick="resetFilters()" aria-label="Reset all filters to default">Reset Filters</button>
                 </div>
             </div>
@@ -294,7 +286,7 @@
                 <div class="kpi-label">Performance vs Prior</div>
                 <div class="kpi-desc">Change from previous period</div>
             </div>
-            
+
             <!-- Time Controls -->
             <div class="time-controls card">
                 <button class="preset-btn active" data-period="7" aria-label="Show data for last 7 days" role="button">Last 7d</button>
@@ -305,18 +297,36 @@
                     <label>To:</label>
                     <input type="date" id="end-date">
                 </div>
+                <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                    <label style="color: #000; font-weight: 600;">Location:</label>
+                    <select id="region-dropdown" style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; color: #000; background: #fff; min-width: 200px; cursor: pointer;">
+                        <option value="">Select Region</option>
+                    </select>
+                    <select id="market-dropdown" style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; color: #000; background: #fff; min-width: 200px; cursor: pointer; display: none;">
+                        <option value="">Select Market</option>
+                    </select>
+                    <select id="city-dropdown" style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; color: #000; background: #fff; min-width: 200px; cursor: pointer; display: none;">
+                        <option value="">Select City</option>
+                    </select>
+                    <button class="preset-btn" id="clear-location-btn" style="display: none;">Clear Location</button>
+                </div>
             </div>
-            
+
+            <!-- Charts Section Title -->
+            <div class="card" style="grid-column: 1 / -1; text-align: center; padding: 12px;">
+                <h2 style="color: #007bff; margin: 0;">Companywide Performance Charts</h2>
+            </div>
+
             <!-- Chart -->
             <div class="chart-container card">
                 <div id="chart-filter-display" style="margin-bottom: 10px; font-weight: 600; color: #007bff; display: none;"></div>
                 <canvas id="trend-canvas"></canvas>
             </div>
 
-            
+
             <!-- Review Volume Chart -->
             <div class="chart-container card">
-                <h3>Review Volume</h3>
+                <h3>Review Volume - Companywide</h3>
                 <canvas id="volume-canvas"></canvas>
             </div>
             
@@ -944,8 +954,9 @@
                 setTimeout(() => {
                     testCompetitorData();
                 }, 1000);
-                
+
                 applyFilters();
+                populateLocationDropdown();
                 wireEvents();
             } catch (error) {
                 console.error('Error loading data:', error);
@@ -14490,6 +14501,250 @@
             return realReviews;
         }
 
+        function populateBestWorstMarkets() {
+            // Filter for September 2025 data only
+            const septemberData = data.filter(review => review.month === '2025-09');
+
+            // Group by market and calculate totals
+            const marketStats = {};
+            septemberData.forEach(review => {
+                const market = review.market;
+                if (!marketStats[market]) {
+                    marketStats[market] = {
+                        market: market,
+                        totalReviews: 0,
+                        totalRating: 0,
+                        count: 0
+                    };
+                }
+                marketStats[market].totalReviews += review.totalReviews || 1;
+                marketStats[market].totalRating += (review.avgRating || review.rating) * (review.totalReviews || 1);
+                marketStats[market].count += (review.totalReviews || 1);
+            });
+
+            // Calculate averages and convert to array
+            const marketArray = Object.values(marketStats).map(m => ({
+                market: m.market,
+                totalReviews: m.totalReviews,
+                avgRating: m.totalRating / m.count
+            }));
+
+            // Sort by rating
+            const byRating = [...marketArray].sort((a, b) => b.avgRating - a.avgRating);
+            const topRating = byRating.slice(0, 5);
+            const bottomRating = byRating.slice(-5).reverse();
+
+            // Sort by volume
+            const byVolume = [...marketArray].sort((a, b) => b.totalReviews - a.totalReviews);
+            const topVolume = byVolume.slice(0, 5);
+            const bottomVolume = byVolume.slice(-5).reverse();
+
+            // Populate tables
+            document.getElementById('top-markets-rating').innerHTML = topRating.map((m, i) => `
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 8px;">${i + 1}</td>
+                    <td style="padding: 8px; font-weight: 600;">${m.market}</td>
+                    <td style="padding: 8px; text-align: right; color: #28a745; font-weight: 600;">${m.avgRating.toFixed(1)}</td>
+                    <td style="padding: 8px; text-align: right;">${m.totalReviews}</td>
+                </tr>
+            `).join('');
+
+            document.getElementById('bottom-markets-rating').innerHTML = bottomRating.map((m, i) => `
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 8px;">${i + 1}</td>
+                    <td style="padding: 8px; font-weight: 600;">${m.market}</td>
+                    <td style="padding: 8px; text-align: right; color: #dc3545; font-weight: 600;">${m.avgRating.toFixed(1)}</td>
+                    <td style="padding: 8px; text-align: right;">${m.totalReviews}</td>
+                </tr>
+            `).join('');
+
+            document.getElementById('top-markets-volume').innerHTML = topVolume.map((m, i) => `
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 8px;">${i + 1}</td>
+                    <td style="padding: 8px; font-weight: 600;">${m.market}</td>
+                    <td style="padding: 8px; text-align: right; color: #28a745; font-weight: 600;">${m.totalReviews}</td>
+                    <td style="padding: 8px; text-align: right;">${m.avgRating.toFixed(1)}</td>
+                </tr>
+            `).join('');
+
+            document.getElementById('bottom-markets-volume').innerHTML = bottomVolume.map((m, i) => `
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 8px;">${i + 1}</td>
+                    <td style="padding: 8px; font-weight: 600;">${m.market}</td>
+                    <td style="padding: 8px; text-align: right; color: #dc3545; font-weight: 600;">${m.totalReviews}</td>
+                    <td style="padding: 8px; text-align: right;">${m.avgRating.toFixed(1)}</td>
+                </tr>
+            `).join('');
+
+            // Group by city and calculate totals
+            const cityStats = {};
+            septemberData.forEach(review => {
+                const city = review.city;
+                if (!cityStats[city]) {
+                    cityStats[city] = {
+                        city: city,
+                        totalReviews: 0,
+                        totalRating: 0,
+                        count: 0
+                    };
+                }
+                cityStats[city].totalReviews += review.totalReviews || 1;
+                cityStats[city].totalRating += (review.avgRating || review.rating) * (review.totalReviews || 1);
+                cityStats[city].count += (review.totalReviews || 1);
+            });
+
+            // Calculate averages and convert to array
+            const cityArray = Object.values(cityStats).map(c => ({
+                city: c.city,
+                totalReviews: c.totalReviews,
+                avgRating: c.totalRating / c.count
+            }));
+
+            // Sort by rating
+            const citiesByRating = [...cityArray].sort((a, b) => b.avgRating - a.avgRating);
+            const topCitiesRating = citiesByRating.slice(0, 5);
+            const bottomCitiesRating = citiesByRating.slice(-5).reverse();
+
+            // Sort by volume
+            const citiesByVolume = [...cityArray].sort((a, b) => b.totalReviews - a.totalReviews);
+            const topCitiesVolume = citiesByVolume.slice(0, 5);
+            const bottomCitiesVolume = citiesByVolume.slice(-5).reverse();
+
+            // Populate city tables
+            document.getElementById('top-cities-rating').innerHTML = topCitiesRating.map((c, i) => `
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 8px;">${i + 1}</td>
+                    <td style="padding: 8px; font-weight: 600;">${c.city}</td>
+                    <td style="padding: 8px; text-align: right; color: #28a745; font-weight: 600;">${c.avgRating.toFixed(1)}</td>
+                    <td style="padding: 8px; text-align: right;">${c.totalReviews}</td>
+                </tr>
+            `).join('');
+
+            document.getElementById('bottom-cities-rating').innerHTML = bottomCitiesRating.map((c, i) => `
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 8px;">${i + 1}</td>
+                    <td style="padding: 8px; font-weight: 600;">${c.city}</td>
+                    <td style="padding: 8px; text-align: right; color: #dc3545; font-weight: 600;">${c.avgRating.toFixed(1)}</td>
+                    <td style="padding: 8px; text-align: right;">${c.totalReviews}</td>
+                </tr>
+            `).join('');
+
+            document.getElementById('top-cities-volume').innerHTML = topCitiesVolume.map((c, i) => `
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 8px;">${i + 1}</td>
+                    <td style="padding: 8px; font-weight: 600;">${c.city}</td>
+                    <td style="padding: 8px; text-align: right; color: #28a745; font-weight: 600;">${c.totalReviews}</td>
+                    <td style="padding: 8px; text-align: right;">${c.avgRating.toFixed(1)}</td>
+                </tr>
+            `).join('');
+
+            document.getElementById('bottom-cities-volume').innerHTML = bottomCitiesVolume.map((c, i) => `
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 8px;">${i + 1}</td>
+                    <td style="padding: 8px; font-weight: 600;">${c.city}</td>
+                    <td style="padding: 8px; text-align: right; color: #dc3545; font-weight: 600;">${c.totalReviews}</td>
+                    <td style="padding: 8px; text-align: right;">${c.avgRating.toFixed(1)}</td>
+                </tr>
+            `).join('');
+        }
+
+        function populateLocationDropdown() {
+            // Define state to region mapping
+            const stateToRegion = {
+                'Texas': 'Texas',
+                'Massachusetts': 'East Coast',
+                'Pennsylvania': 'East Coast',
+                'Maryland': 'East Coast',
+                'New York': 'East Coast',
+                'Washington DC': 'East Coast',
+                'New Jersey': 'East Coast',
+                'Illinois': 'Illiana',
+                'Indiana': 'Illiana',
+                'Washington': 'West Coast',
+                'Oregon': 'West Coast',
+                'California': 'West Coast'
+            };
+
+            // Create hierarchical structure: region → state (market) → cities
+            const locationHierarchy = {};
+
+            data.forEach(review => {
+                const state = review.market; // market field is actually the state
+                const region = stateToRegion[state] || 'Other';
+                const city = review.city;
+
+                if (!locationHierarchy[region]) {
+                    locationHierarchy[region] = {};
+                }
+                if (!locationHierarchy[region][state]) {
+                    locationHierarchy[region][state] = new Set();
+                }
+                locationHierarchy[region][state].add(city);
+            });
+
+            // Store for later use
+            window.locationHierarchy = locationHierarchy;
+            window.stateToRegion = stateToRegion;
+
+            // Populate region dropdown with proper order
+            const regionDropdown = document.getElementById('region-dropdown');
+            const regionOrder = ['Texas', 'East Coast', 'Illiana', 'West Coast'];
+            let regionOptions = '<option value="">Select Region</option>';
+
+            regionOrder.forEach(region => {
+                if (locationHierarchy[region]) {
+                    regionOptions += `<option value="${region}">${region}</option>`;
+                }
+            });
+
+            regionDropdown.innerHTML = regionOptions;
+        }
+
+        function populateMarketDropdown(selectedRegion) {
+            const marketDropdown = document.getElementById('market-dropdown');
+            const cityDropdown = document.getElementById('city-dropdown');
+
+            if (!selectedRegion) {
+                marketDropdown.style.display = 'none';
+                cityDropdown.style.display = 'none';
+                marketDropdown.innerHTML = '<option value="">Select Market</option>';
+                cityDropdown.innerHTML = '<option value="">Select City</option>';
+                return;
+            }
+
+            // Show market dropdown and populate it
+            marketDropdown.style.display = 'inline-block';
+            cityDropdown.style.display = 'none';
+            cityDropdown.innerHTML = '<option value="">Select City</option>';
+
+            let marketOptions = '<option value="">Select Market</option>';
+            const markets = window.locationHierarchy[selectedRegion];
+            Object.keys(markets).sort().forEach(market => {
+                marketOptions += `<option value="${market}">${market}</option>`;
+            });
+            marketDropdown.innerHTML = marketOptions;
+        }
+
+        function populateCityDropdown(selectedRegion, selectedMarket) {
+            const cityDropdown = document.getElementById('city-dropdown');
+
+            if (!selectedRegion || !selectedMarket) {
+                cityDropdown.style.display = 'none';
+                cityDropdown.innerHTML = '<option value="">Select City</option>';
+                return;
+            }
+
+            // Show city dropdown and populate it
+            cityDropdown.style.display = 'inline-block';
+
+            let cityOptions = '<option value="">Select City</option>';
+            const cities = window.locationHierarchy[selectedRegion][selectedMarket];
+            Array.from(cities).sort().forEach(city => {
+                cityOptions += `<option value="${city}">${city}</option>`;
+            });
+            cityDropdown.innerHTML = cityOptions;
+        }
+
         function applyFilters() {
             filteredData = data.filter(review => {
                 const reviewDate = new Date(review.date + 'T00:00:00');
@@ -15294,7 +15549,73 @@
                     applyFilters();
                 };
             });
-            
+
+            // Region dropdown
+            document.getElementById('region-dropdown').onchange = (e) => {
+                const selectedRegion = e.target.value;
+                const clearBtn = document.getElementById('clear-location-btn');
+
+                if (selectedRegion) {
+                    filters.region = selectedRegion;
+                    filters.market = null;
+                    filters.city = null;
+                    populateMarketDropdown(selectedRegion);
+                    clearBtn.style.display = 'inline-block';
+                    applyFilters();
+                } else {
+                    filters.region = null;
+                    filters.market = null;
+                    filters.city = null;
+                    populateMarketDropdown(null);
+                    clearBtn.style.display = 'none';
+                    applyFilters();
+                }
+            };
+
+            // Market dropdown
+            document.getElementById('market-dropdown').onchange = (e) => {
+                const selectedMarket = e.target.value;
+                const selectedRegion = document.getElementById('region-dropdown').value;
+
+                if (selectedMarket) {
+                    filters.market = selectedMarket;
+                    filters.city = null;
+                    populateCityDropdown(selectedRegion, selectedMarket);
+                    applyFilters();
+                } else {
+                    filters.market = null;
+                    filters.city = null;
+                    populateCityDropdown(null, null);
+                    applyFilters();
+                }
+            };
+
+            // City dropdown
+            document.getElementById('city-dropdown').onchange = (e) => {
+                const selectedCity = e.target.value;
+
+                if (selectedCity) {
+                    filters.city = selectedCity;
+                } else {
+                    filters.city = null;
+                }
+                applyFilters();
+            };
+
+            // Clear location button
+            document.getElementById('clear-location-btn').onclick = () => {
+                document.getElementById('region-dropdown').value = '';
+                document.getElementById('market-dropdown').value = '';
+                document.getElementById('city-dropdown').value = '';
+                filters.region = null;
+                filters.market = null;
+                filters.city = null;
+                populateMarketDropdown(null);
+                populateCityDropdown(null, null);
+                document.getElementById('clear-location-btn').style.display = 'none';
+                applyFilters();
+            };
+
             // Date pickers
             document.getElementById('start-date').onchange = (e) => {
                 filters.start = e.target.value;
