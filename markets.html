@@ -72,6 +72,28 @@
       <div id="regional-tables" class="card" style="grid-column: 1 / -1;">
 
         <div class="region-table">
+          <div class="region-title">Market Rankings - September 2025</div>
+          <div style="font-size: 12px; color: #666; margin-bottom: 12px; padding: 0 12px;">
+            Click on column headers to sort (Average Rating or Total Reviews)
+          </div>
+          <table class="data-table-region">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Market</th>
+                <th style="cursor: pointer; user-select: none;" onclick="sortCustomMarketTable('rating')" id="custom-market-rating-header">
+                  Average Rating <span id="custom-market-rating-arrow">▼</span>
+                </th>
+                <th style="cursor: pointer; user-select: none;" onclick="sortCustomMarketTable('volume')" id="custom-market-volume-header">
+                  Total Reviews <span id="custom-market-volume-arrow"></span>
+                </th>
+              </tr>
+            </thead>
+            <tbody id="custom-markets-table"></tbody>
+          </table>
+        </div>
+
+        <div class="region-table">
           <div class="region-title">Region Rankings - September 2025</div>
           <div style="font-size: 12px; color: #666; margin-bottom: 12px; padding: 0 12px;">
             Click on column headers to sort (Average Rating or Total Reviews)
@@ -13720,6 +13742,46 @@
         avgRating: r.totalRating / r.count
     }));
 
+    // Custom market groupings for Market Rankings table
+    const customMarketMapping = {
+        'Texas': ['Texas'],
+        'Illiana': ['Illinois', 'Indiana'],
+        'West Coast': ['California', 'Washington', 'Oregon'],
+        'Boston': ['Massachusetts'],
+        'DC': ['Washington DC', 'Maryland'],
+        'Pennsylvania': ['Pennsylvania', 'New Jersey'],
+        'New York': ['New York']
+    };
+
+    const customMarketStats = {};
+    Object.keys(customMarketMapping).forEach(marketName => {
+        customMarketStats[marketName] = {
+            market: marketName,
+            totalReviews: 0,
+            totalRating: 0,
+            count: 0
+        };
+    });
+
+    septemberData.forEach(review => {
+        const state = review.market;
+        // Find which custom market this state belongs to
+        for (const [marketName, states] of Object.entries(customMarketMapping)) {
+            if (states.includes(state)) {
+                customMarketStats[marketName].totalReviews += review.totalReviews || 1;
+                customMarketStats[marketName].totalRating += (review.avgRating || review.rating) * (review.totalReviews || 1);
+                customMarketStats[marketName].count += (review.totalReviews || 1);
+                break;
+            }
+        }
+    });
+
+    let customMarketArray = Object.values(customMarketStats).map(m => ({
+        name: m.market,
+        totalReviews: m.totalReviews,
+        avgRating: m.totalRating / m.count
+    }));
+
     // Group by market (state)
     const marketStats = {};
     septemberData.forEach(review => {
@@ -13787,6 +13849,8 @@
     }));
 
     // Sort states for each table
+    let customMarketSort = 'rating';
+    let customMarketSortOrder = 'desc';
     let regionSort = 'rating';
     let regionSortOrder = 'desc';
     let marketSort = 'rating';
@@ -13810,6 +13874,34 @@
         });
 
         tableBody.innerHTML = html;
+    }
+
+    // Sort custom market table
+    function sortCustomMarketTable(column) {
+        if (customMarketSort === column) {
+            customMarketSortOrder = customMarketSortOrder === 'desc' ? 'asc' : 'desc';
+        } else {
+            customMarketSort = column;
+            customMarketSortOrder = 'desc';
+        }
+
+        let sortedData;
+        if (column === 'rating') {
+            sortedData = [...customMarketArray].sort((a, b) => {
+                return customMarketSortOrder === 'desc' ? b.avgRating - a.avgRating : a.avgRating - b.avgRating;
+            });
+        } else {
+            sortedData = [...customMarketArray].sort((a, b) => {
+                return customMarketSortOrder === 'desc' ? b.totalReviews - a.totalReviews : a.totalReviews - b.totalReviews;
+            });
+        }
+
+        document.getElementById('custom-market-rating-arrow').textContent =
+            customMarketSort === 'rating' ? (customMarketSortOrder === 'desc' ? '▼' : '▲') : '';
+        document.getElementById('custom-market-volume-arrow').textContent =
+            customMarketSort === 'volume' ? (customMarketSortOrder === 'desc' ? '▼' : '▲') : '';
+
+        renderTable('custom-markets-table', sortedData);
     }
 
     // Sort region table
@@ -13897,6 +13989,7 @@
     }
 
     // Initial render - all sorted by rating descending
+    sortCustomMarketTable('rating');
     sortRegionTable('rating');
     sortMarketTable('rating');
     sortCityTable('rating');
